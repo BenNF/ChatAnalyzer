@@ -1,0 +1,18 @@
+.pie-path:hover{
+    fill: red;
+    border: 3px solid black;
+}
+.pie-path {
+    pointer-events:all;
+}
+
+.line1 {
+    fill: none;
+    stroke: black;
+    stroke-width: 3px;
+}
+.line0 {
+    fill: none;
+    stroke: blue;
+    stroke-width: 3px;
+}
