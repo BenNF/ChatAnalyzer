@@ -18,7 +18,8 @@ Run:
 
 - [ ] Facebook Messenger
 - [ ] Instagram
-- [ ] CSV
+- [X] CSV
+- [X] JSON
 - [ ] WhatsApp
 - [ ] Groupme
 - [ ] Signal
@@ -34,6 +35,6 @@ Run:
 - [ ] Message Timeline -- Timeline Chart
 
 #### Metrics:
- - [ ] Averege: Length(words), length(Characters), Messages/day
+ - [X] Averege: Length(words), length(Characters), Messages/day
  - [ ] Most Common Words
- - [ ] Total: Messages, Days, Words, Characters
+ - [X] Total: Messages, Days, Words, Characters

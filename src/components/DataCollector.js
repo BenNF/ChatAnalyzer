@@ -28,7 +28,8 @@ class DataCollector extends React.Component {
       mode: modes.select,
       platform: null,
       data: [],
-      dataProcessor: null
+      dataProcessor: null,
+      callback: props.callback
     };
   }
 
@@ -53,30 +54,38 @@ class DataCollector extends React.Component {
   loadHandler = event => {
     event.preventDefault();
     const file = event.target.file.files[0];
-    event.target.file.value = ""
-    console.log(file)
+    event.target.file.value = "";
     let reader = new FileReader();
     reader.onload = event => {
-      let data = this.state.data
+      let data = this.state.data;
       data.push(this.state.dataProcessor.formatData(event.target.result));
       this.setState({
+        ...this.state,
         data: data
-      })
+      });
     };
     reader.readAsText(file);
   };
 
   removeHandler = event => {
-    const index = event.target.attributes.dataindex.value
-    let data = [...this.state.data.slice(0, index), ...this.state.data.slice(index+1)]
-    this.setState({data: data})
-  }
+    const index = event.target.attributes.dataindex.value;
+    let data = [
+      ...this.state.data.slice(0, index),
+      ...this.state.data.slice(index + 1)
+    ];
+    this.setState({ ...this.state, data: data });
+  };
+
+  exportHandler = event => {
+    this.state.callback(this.state.data);
+  };
 
   render() {
     switch (this.state.mode) {
       case modes.select:
         return (
           <div className="data-collector">
+            <h1>Select your data Source</h1>
             <div className="buttons-box">
               {Object.keys(platforms).map((key, i) => {
                 return (
@@ -105,16 +114,25 @@ class DataCollector extends React.Component {
       case modes.load:
         return (
           <div className="data-collector">
+            <h1>Add as many chat sesssions as you want</h1>
             <form ref="inputform" onSubmit={this.loadHandler}>
-              <input
-                type="file"
-                name="file"
-              />
+              <input type="file" name="file" />
               <button type="submit">Submit</button>
             </form>
-            <ul>{this.state.data.map((chat, index)=> {
-              return <li>{index}: {chat.title} {chat.getTotalMessages()} messages loaded. <button onClick={this.removeHandler} dataindex={index}>Remove!</button></li>
-            })}</ul>
+            <ul>
+              {this.state.data.map((chat, index) => {
+                return (
+                  <li key={index}>
+                    {index}: {chat.title} {chat.getTotalMessages()} messages
+                    loaded.{" "}
+                    <button onClick={this.removeHandler} dataindex={index}>
+                      Remove!
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+            <button onClick={this.exportHandler}>Analyze!</button>
           </div>
         );
       case modes.export:

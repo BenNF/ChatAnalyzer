@@ -16,3 +16,14 @@
     stroke: blue;
     stroke-width: 3px;
 }
+
+
+.data-collector {
+    height: 300px;
+    background-color: #ccc;
+    width: 100%;
+}
+.buttons-box {
+    display: flex;
+    justify-content: space-evenly;
+}
