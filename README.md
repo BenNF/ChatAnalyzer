@@ -17,13 +17,13 @@ Run:
 ## Data sources
 
 - [ ] Facebook Messenger
+- [ ] Instagram
 - [ ] CSV
 - [ ] WhatsApp
 - [ ] Groupme
 - [ ] Signal
 - [ ] Transmition
 - [ ] Hangouts
-- [ ] SMS -- when loaded from mobile devices
 
 ## Vizulizations
 

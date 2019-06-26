@@ -1,9 +1,11 @@
 import Message from "./Message";
+import { summarizers } from "istanbul-lib-report";
 
 export default class Chat {
-    constructor(){
+    constructor(title){
         this.messages = []
         this.members = []
+        this.title = title
     }
 
     toJson(){
@@ -13,9 +15,11 @@ export default class Chat {
     }
 
     fromJson(messagesJson){
-        messagesJson.forEach(msg => {
-            if (!this.members.includes(msg.sender)){this.members.push(msg.sender)}
-            this.messages.push(new Message().fromJson(msg))
+        messagesJson.forEach((msg,i) => {
+            let message = new Message(i)
+            message.fromJson(msg)
+            if (!this.members.includes(message.sender)){this.members.push(message.sender)}
+            this.messages.push(message)
         })
     }
 
@@ -31,7 +35,19 @@ export default class Chat {
         return averageWordsBySender;
     }
 
-    getAverageWords(messages){
-        return messages.reduce((acum, curr) => acum +curr.getWordLength())/messages.length
+    getAverageWords(messages=this.messages){
+        return this.getTotalWords(messages)/messages.length
+    }
+
+    getTotalWords(messages=this.messages){
+        return messages.reduce((acum, curr) => acum +curr.getWordLength())
+    }
+
+    getTotalCharacters(messages=this.messages){
+        return 
+    }
+
+    getTotalMessages(messages=this.messages){
+        return messages.length
     }
 }

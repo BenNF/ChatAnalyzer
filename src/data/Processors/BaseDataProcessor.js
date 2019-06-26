@@ -1,6 +1,6 @@
 
 export default class BaseDataProcessor{
-    constructor(){
-
+    constructor(props){
+        // this.api = null;
     }
 }

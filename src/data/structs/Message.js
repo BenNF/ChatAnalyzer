@@ -1,21 +1,22 @@
 export default class Message {
-    constructor({sender, contents, timestamp}){
-        this.sender = sender
-        this.content = contents
-        this.timestamp = timestamp
+    constructor(index){
+        this.index = index
+        this.sender = null
+        this.content = null
+        this.timestamp = null
     }
 
     fromJson(json){
-        this.sender = json.sender
+        this.sender = json.sender_name
         this.content = json.content
-        this.timestamp = json.timestamp
+        this.timestamp = json.timestamp_ms
     }
     
     toJson(){
         return {
-            sender: this.sender,
+            sender_name: this.sender,
             content: this.content,
-            timestamp: this.timestamp
+            timestamp_ms: this.timestamp
         }
     }
 
