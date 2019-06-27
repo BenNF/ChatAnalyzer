@@ -15,7 +15,7 @@ class RadarChart extends BaseChart {
       opacityCircles = 0.1,
       strokeWdith = 2,
       roundStrokes = false,
-      color = d3.schemeSet2
+      color = d3.scaleOrdinal(d3.schemeCategory10)
     } = props;
 
     this.state = {
@@ -71,7 +71,7 @@ class RadarChart extends BaseChart {
     const config = this.state.chartConfig;
     const dimensions = this.state.dimensions;
     const data = this.state.data[this.state.activeKey];
-
+    console.log(data);
     //compute chart values
     const maxValue = Math.max(
       config.maxValue,
@@ -79,7 +79,7 @@ class RadarChart extends BaseChart {
     );
     const allAxis = Object.keys(data),
       total = allAxis.length,
-      radius = Math.min(dimensions.width / 2, dimensions.height / 2)-75,
+      radius = Math.min(dimensions.width / 2, dimensions.height / 2) - 75,
       angleSlice = (Math.PI * 2) / total;
 
     const rScale = d3
@@ -96,9 +96,9 @@ class RadarChart extends BaseChart {
       .attr(
         "transform",
         "translate(" +
-          ((this.state.dimensions.width / 2) + this.state.dimensions.margin) +
+          (this.state.dimensions.width / 2 + this.state.dimensions.margin) +
           "," +
-          ((this.state.dimensions.height / 2) + this.state.dimensions.margin) +
+          (this.state.dimensions.height / 2 + this.state.dimensions.margin) +
           ")"
       );
 
@@ -197,33 +197,34 @@ class RadarChart extends BaseChart {
       .call(this.wrap, config.wrapWidth);
 
     //The radial line function
-    let radarLine = d3.radialLine()
-      .radius(function(d) {
-        return rScale(d.value);
-      })
+    let radarLine = d3
+      .lineRadial()
       .angle(function(d, i) {
         return i * angleSlice;
+      })
+      .radius(function(d) {
+        return rScale(d);
       });
 
     if (config.roundStrokes) {
       radarLine.interpolate("cardinal-closed");
     }
 
+    const flatData = Object.keys(data).map(key => data[key]);
+    console.log(flatData);
     //Create a wrapper for the blobs
     var blobWrapper = g
       .selectAll(".radarWrapper")
-      .data(data)
+      .data(flatData)
       .enter()
       .append("g")
-      .attr("class", "radarWrapper");
+      .attr("class", "radarWrapper")
+  
 
     //Append the backgrounds
     blobWrapper
       .append("path")
       .attr("class", "radarArea")
-      .attr("d", function(d, i) {
-        return radarLine(d);
-      })
       .style("fill", function(d, i) {
         return config.color(i);
       })
@@ -248,15 +249,14 @@ class RadarChart extends BaseChart {
           .style("fill-opacity", config.opacityArea);
       });
 
-    //Create the outlines
+    // //Create the outlines
     blobWrapper
       .append("path")
+      .datum(flatData)
       .attr("class", "radarStroke")
-      .attr("d", function(d, i) {
-        return radarLine(d);
-      })
+      .attr("d", radarLine)
       .style("stroke-width", config.strokeWidth + "px")
-      .style("stroke", function(d, i) {
+      .style("stroke", (d, i) => {
         return config.color(i);
       })
       .style("fill", "none")
@@ -265,7 +265,7 @@ class RadarChart extends BaseChart {
     //Append the circles
     blobWrapper
       .selectAll(".radarCircle")
-      .data(function(d, i) {
+      .data((d, i) => {
         return d;
       })
       .enter()

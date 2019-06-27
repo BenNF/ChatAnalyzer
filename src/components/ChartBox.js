@@ -5,6 +5,7 @@ import LineChart from "./Charts/LineChart";
 import RadarChart from "./Charts/RadarChart"
 
 const ChartBox = props => {
+  console.log("Chart Box Render")
   const PieChartData = () => {
     let pieData = {};
     const data = props.data;
@@ -15,7 +16,7 @@ const ChartBox = props => {
   };
 
   const RadarTimeData = () => {
-
+    console.log('radar-data', props.data)
     const fullData = props.data
     const keys = [...Array(48).keys()].map((val, i) => {
       return Math.round(i / 2) + ":" + (i % 2 == 1 ? "00" : "30");
@@ -44,6 +45,7 @@ const ChartBox = props => {
     fullData.messages.forEach(msg => [
         radarData['Combined'][keys[msg.getHourIndex()]] += 1
     ])
+    console.log("radar-processed-data", radarData)
     return radarData
   };
 

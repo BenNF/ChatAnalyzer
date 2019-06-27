@@ -18,10 +18,24 @@ class BaseChart extends React.Component {
       }
     };
   }
-  componentWillUpdate() {
+  componentDidUpdate() {
     this.updateChart();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props != nextProps) {
+      this.setState({
+        ...this.state,
+        title: nextProps.title,
+        data: nextProps.data,
+        dimensions: {
+          height: nextProps.height,
+          width: nextProps.width,
+          margin: nextProps.margin ? nextProps.margin : 50
+        }
+      });
+    }
+  }
   componentDidMount() {
     this.updateChart();
   }
