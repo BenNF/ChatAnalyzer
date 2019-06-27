@@ -27,3 +27,29 @@
     display: flex;
     justify-content: space-evenly;
 }
+
+.metrics-container{
+    display: flex;
+    width: 100%;
+    background-color: #ccc;
+    border: 2px solid black;
+    justify-content: space-between;
+}   
+
+.metrics-total {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+}
+
+.metric{ 
+ margin-left: 5%;
+ margin-right: 5%;
+ margin: 10px;
+ transition: opacity .3s;
+}
+
+.metric:hover{
+    opacity: .7;
+    box-shadow: 0 0 10px;
+}

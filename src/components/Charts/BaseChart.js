@@ -47,7 +47,6 @@ class BaseChart extends React.Component {
   };
   updateChart = () => {
     this.resetSvg();
-    console.log("update chart");
   };
   renderControls = () => {
     return <div className="chart-controls" />;

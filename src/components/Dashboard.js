@@ -12,7 +12,6 @@ class Dashboard extends React.Component {
   }
 
   dataCallback = data => {
-    console.log("got DAta")
     this.setState({
       gatherData: false,
       data: data

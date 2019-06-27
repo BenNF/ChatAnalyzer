@@ -30,7 +30,8 @@ export default class TabbedDataView extends React.Component {
   renderMetricsBars = () => {
       const currentData = this.state.data[this.state.activeIndex]
       return(currentData.members.map((mem, index)=> {
-            return(<MetricBar data={currentData.getMetricsBySender(mem)}/>)
+            const data = currentData.getMetricsBySender(mem)
+            return(<MetricBar data={data} key={"bar"+index}/>)
       }))
   };
 

@@ -29,41 +29,51 @@ export default class Chat {
     return this.messages.filter(msg => msg.sender === sender);
   }
 
-  getMetricsBySender(sender){
-      const msgs = this.getMessagesBySender(sender)
-      return {
-          total: {
-              words: this.getTotalWords(msgs),
-              messages: this.getTotalMessages(msgs),
-              days: this.getTotalDays(msgs),
-              chars: this.getTotalCharacters(msgs)
-          },
-          average: {
-              words : this.getAverageWords(msgs),
-              messages: this.getAveragesMessagesPerDay(msgs),
-              chars: this.getAverageChars(msgs)
-          }
+  getMetricsBySender(sender) {
+    const msgs = this.getMessagesBySender(sender);
+    return {
+      title: sender,
+      total: {
+        words: this.getTotalWords(msgs),
+        messages: this.getTotalMessages(msgs),
+        days: this.getTotalDays(msgs),
+        chars: this.getTotalCharacters(msgs)
+      },
+      average: {
+        words: this.getAverageWords(msgs),
+        messages: this.getAveragesMessagesPerDay(msgs),
+        chars: this.getAverageChars(msgs)
       }
+    };
   }
 
   getAverageWords(messages = this.messages) {
-    return this.getTotalWords(messages) / messages.length;
+    return (
+      Math.round((this.getTotalWords(messages) / messages.length) * 100) / 100
+    );
   }
 
-  getAverageChars(messages= this.messages){
-      return this.getTotalCharacters(messages)/messages.length 
+  getAverageChars(messages = this.messages) {
+    return (
+      Math.round((this.getTotalCharacters(messages) / messages.length) * 100) /
+      100
+    );
   }
 
-  getAveragesMessagesPerDay(messages=this.messages){
-      return this.getTotalMessages(messages)/this.getTotalDays(messages)
+  getAveragesMessagesPerDay(messages = this.messages) {
+    return (
+      Math.round(
+        (this.getTotalMessages(messages) / this.getTotalDays(messages)) * 100
+      ) / 100
+    );
   }
 
   getTotalWords(messages = this.messages) {
-    return messages.reduce((acum, curr) => acum + curr.getWordLength());
+    return messages.reduce((acum, curr) => acum + curr.getWordLength(), 0);
   }
 
   getTotalCharacters(messages = this.messages) {
-    return messages.reduce((acum, curr)=> acum+ curr.getCharacterLength())
+    return messages.reduce((acum, curr) => acum + curr.getCharacterLength(), 0);
   }
 
   getTotalMessages(messages = this.messages) {
@@ -71,7 +81,7 @@ export default class Chat {
   }
 
   getTotalDays(messages = this.messages) {
-      const days = messages.map(msg => msg.getDate())
-      return (new Set(days).size)
+    const days = messages.map(msg => msg.getDate());
+    return new Set(days).size;
   }
 }

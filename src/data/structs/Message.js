@@ -25,14 +25,23 @@ export default class Message {
   }
 
   getWordLength() {
-    return this.content.split(" ").length;
+    if(this.content ){
+      return this.content.split(" ").length;
+    }
+    return 0;
   }
 
   getCharacterLength() {
-    return this.content.length;
+    if (this.content){
+      return this.content.length;
+    }
+    return 0
   }
 
   getDate() {
-    return new Date(this.timestamp).toDateString();
+    if(this.timestamp){
+      return new Date(this.timestamp).toDateString();
+    }
+    return new Date(0).toDateString()
   }
 }
