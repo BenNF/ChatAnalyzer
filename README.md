@@ -12,8 +12,6 @@ Run:
 
 ```npm run start```
 
-
-
 ## Data sources
 
 - [ ] Facebook Messenger
@@ -30,7 +28,7 @@ Run:
 
 #### Graphs:
 - [ ] Messages By Sender By Time -- Radar Chart/Spider Chart
-- [ ] Message Count By Sender -- PieGraph/Donut/Treemap
+- [X] Message Count By Sender -- PieGraph/Donut/Treemap
 - [ ] Message Sentiment -- Radar Chart
 - [ ] Message Timeline -- Timeline Chart
 
@@ -38,3 +36,12 @@ Run:
  - [X] Averege: Length(words), length(Characters), Messages/day
  - [ ] Most Common Words
  - [X] Total: Messages, Days, Words, Characters
+
+ ## Style
+  - [ ] Style PieChart
+  - [ ] Style BarChart
+  - [ ] Style RadarChart
+  - [ ] Style Timeline
+  - [ ] Style Metrics Bar
+  - [ ] Style Tabbed Data View
+  - [ ] Style DataCollector

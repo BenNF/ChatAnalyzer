@@ -31,7 +31,7 @@ class BaseChart extends React.Component {
       .selectAll("*")
       .remove();
     d3.select(this.ref.current)
-      .attr("width", this.state.dimensions.width + this.state.dimensions.margin + 100)
+      .attr("width", this.state.dimensions.width + this.state.dimensions.margin)
       .attr(
         "height",
         this.state.dimensions.height + this.state.dimensions.margin

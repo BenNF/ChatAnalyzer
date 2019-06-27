@@ -44,4 +44,10 @@ export default class Message {
     }
     return new Date(0).toDateString()
   }
+  getHourIndex(){
+    if(this.timestamp){
+      const hourOffset = this.timestamp - Date.parse(this.getDate()) 
+      return Math.round(((hourOffset/1000)/60)/60) 
+    }
+  }
 }
