@@ -1,7 +1,7 @@
 import React from "react"
 import DataCollector from "./DataCollector";
 import TabbedDataview from "./TabbedDataView";
-import ChartBox from "./ChartBox"
+
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +29,6 @@ class Dashboard extends React.Component {
       return (
         <div className="dashboard-container">
           <TabbedDataview data={this.state.data}/>
-          <ChartBox data={this.state.data}/>
         </div>
       );
     }

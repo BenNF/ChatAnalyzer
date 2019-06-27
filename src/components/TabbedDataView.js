@@ -1,5 +1,7 @@
 import React from "react";
 import MetricBar from "./MetricBar"
+import ChartBox from "./ChartBox"
+
 export default class TabbedDataView extends React.Component {
   constructor(props) {
     super(props);
@@ -40,6 +42,7 @@ export default class TabbedDataView extends React.Component {
       <React.Fragment>
         <div className="nav-bar">{this.renderNavBar()}</div>
         <div className="metric-bars">{this.renderMetricsBars()}</div>
+        <ChartBox data={this.state.data[this.state.activeIndex]}/>
       </React.Fragment>
     );
   }
