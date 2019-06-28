@@ -70,8 +70,10 @@ class BaseChart extends React.Component {
     return (
       <div className={this.state.chartConfig.type + "-chart"}>
         <h1>{this.state.title}</h1>
-        <svg ref={this.ref} />
-        {this.renderControls()}
+        <div className="chart-container">
+          <svg ref={this.ref} />
+          <div className="chart-controls">{this.renderControls()}</div>
+        </div>
       </div>
     );
   }

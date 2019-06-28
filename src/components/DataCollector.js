@@ -4,28 +4,30 @@ import {
   FbProcessor,
   InstaProcessor,
   WhatsAppProcessor,
-  CSVProcessor,
-  JSONProcessor
+  TwitterProcessor
 } from "../data/processors/DataProcessors";
 import { watchFile } from "fs";
 
 const modes = {
-  select: "select",
+  platoformSelect: "platoformSelect",
+  formatSelect: "formatSelect",
   auth: "auth",
   load: "load",
   export: "export"
 };
 const platforms = {
   whatsapp: WhatsAppProcessor,
-  csv: CSVProcessor,
-  json: JSONProcessor
+  facebook: FbProcessor,
+  twitter: TwitterProcessor,
+  instagram: InstaProcessor
 };
 
 class DataCollector extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: modes.select,
+      mode: modes.platoformSelect,
+      format: null,
       platform: null,
       data: [],
       dataProcessor: null,
@@ -33,22 +35,35 @@ class DataCollector extends React.Component {
     };
   }
 
-  selectorHandler = event => {
+  platformSelectorHandler = event => {
     const key = event.target.attributes.dataplatform.value;
     const dataProcessor = new platforms[key]();
-    let mode = "";
-    if (key === "csv" || key === "json") {
-      mode = modes.load;
-    } else {
-      mode = modes.reduce;
-    }
+
     this.setState({
       ...this.state,
       dataProcessor: dataProcessor,
-      mode: mode
+      mode: modes.formatSelect,
+      platform: key
     });
   };
 
+  formatSelectorHandler = event => {
+    const format = event.target.attributes.dataformat.value
+    if (format === "auth"){
+      this.setState({
+        ...this.state,
+        format: format,
+        mode: modes.auth
+      })
+    }
+    else{
+      this.setState({
+        ...this.state,
+        format: format,
+        mode: modes.load
+      })
+    }
+  };
   authHandler = event => {};
 
   loadHandler = event => {
@@ -58,7 +73,15 @@ class DataCollector extends React.Component {
     let reader = new FileReader();
     reader.onload = event => {
       let data = this.state.data;
-      data.push(this.state.dataProcessor.formatData(event.target.result));
+      let formatedData = null
+      if(this.state.format === "csv"){
+        formatedData = this.state.dataProcessor.formatCSVData(event.target.result)
+      }
+      else if(this.state.format === "json"){
+        formatedData = this.state.dataProcessor.formatJsonData(event.target.result)
+      }
+
+      data.push(formatedData);
       this.setState({
         ...this.state,
         data: data
@@ -82,7 +105,7 @@ class DataCollector extends React.Component {
 
   render() {
     switch (this.state.mode) {
-      case modes.select:
+      case modes.platoformSelect:
         return (
           <div className="data-collector">
             <h1>Select your data Source</h1>
@@ -91,7 +114,7 @@ class DataCollector extends React.Component {
                 return (
                   <button
                     key={i}
-                    onClick={this.selectorHandler}
+                    onClick={this.platformSelectorHandler}
                     dataplatform={key}
                   >
                     {key}
@@ -101,9 +124,28 @@ class DataCollector extends React.Component {
             </div>
           </div>
         );
+      case modes.formatSelect:
+        return (
+          <div className="data-collector">
+            <h1>Select Your Data Format</h1>
+            <div className="buttons-box">
+              <button dataformat="json" onClick={this.formatSelectorHandler}>
+                Load JSON
+              </button>
+              <button dataformat="auth" onClick={this.formatSelectorHandler}>
+                Load by Login
+              </button>
+              <button dataformat="csv" onClick={this.formatSelectorHandler}>
+                Load CSV
+              </button>
+            </div>
+          </div>
+        );
+
       case modes.auth:
         return (
           <div className="data-collector">
+            <h1>Enter your {this.state.platform.charAt(0).toUpperCase() +this.state.platform.slice(1)} email and password</h1>
             <form ref="authform" onSubmit={this.authHandler}>
               <input type="email" ref="email" placeholder="Email" />
               <input type="passowrd" ref="password" placeholder="Password" />

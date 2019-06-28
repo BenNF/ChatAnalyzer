@@ -57,3 +57,17 @@
 .radar{
     margin: 50px;
 }
+
+.charts{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+}
+
+.chart-container{
+    display: flex;
+}
+
+.chart-controls{
+    margin-top: 25%;
+}
