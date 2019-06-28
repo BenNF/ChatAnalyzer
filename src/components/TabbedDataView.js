@@ -39,7 +39,6 @@ export default class TabbedDataView extends React.Component {
 
   render() {
     const chartData = this.state.data[this.state.activeIndex]
-    console.log("chart-data", chartData)
     return (
       <React.Fragment>
         <div className="nav-bar">{this.renderNavBar()}</div>

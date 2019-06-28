@@ -5,8 +5,7 @@ import * as d3 from "d3";
 class PieChart extends Basechart {
   constructor(props) {
     super(props);
-
-    this.state = {
+    this.state ={
       ...this.state,
       activeData: { ...this.state.data },
       chartConfig: {
@@ -19,9 +18,16 @@ class PieChart extends Basechart {
           true
         )
       }
-    };
+    }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props !== nextProps) {
+      nextState.activeData = {...nextProps.data}
+    }
+    return true;
+  }
+  
   updateChart = () => {
     this.resetSvg();
     let svg = d3
@@ -68,7 +74,7 @@ class PieChart extends Basechart {
       .enter()
       .append("text")
       .text(function(d) {
-        return (d.data.key+": " +d.data.value);
+        return d.data.key + ": " + d.data.value;
       })
       .attr("transform", function(d) {
         return "translate(" + arcGen.centroid(d) + ")";
@@ -79,7 +85,7 @@ class PieChart extends Basechart {
 
   renderControls = () => {
     return (
-      <div className="chart-controls">
+      <React.Fragment>
         {Object.keys(this.state.data).map((key, index) => {
           return (
             <div className="control-box" key={index}>
@@ -94,7 +100,7 @@ class PieChart extends Basechart {
             </div>
           );
         })}
-      </div>
+      </React.Fragment>
     );
   };
 
@@ -102,7 +108,7 @@ class PieChart extends Basechart {
     const key = event.target.attributes.datakey.value;
     const index = event.target.attributes.dataindex.value;
     const checked = event.target.checked;
-
+    console.log("checked");
     let controls = this.state.chartConfig.controlsChecked;
     controls[index] = checked;
 

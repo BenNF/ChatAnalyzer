@@ -71,7 +71,6 @@ class RadarChart extends BaseChart {
     const config = this.state.chartConfig;
     const dimensions = this.state.dimensions;
     const data = this.state.data[this.state.activeKey];
-    console.log(data);
     //compute chart values
     const maxValue = Math.max(
       config.maxValue,
@@ -211,7 +210,6 @@ class RadarChart extends BaseChart {
     }
 
     const flatData = Object.keys(data).map(key => data[key]);
-    console.log(flatData);
     //Create a wrapper for the blobs
     var blobWrapper = g
       .selectAll(".radarWrapper")
