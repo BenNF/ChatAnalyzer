@@ -15,19 +15,30 @@ Run:
 ## Data sources
 
 - [ ] Facebook Messenger
+* - [ ] CSV
+* - [X] JSON
+* - [ ] API
 - [ ] Instagram
-- [X] CSV
-- [X] JSON
+* - [ ] CSV
+* - [ ] JSON
+* - [ ] API
 - [ ] WhatsApp
+* - [ ] CSV
+* - [ ] JSON
+* - [ ] API
 - [ ] Groupme
-- [ ] Signal
-- [ ] Transmition
+* - [ ] CSV
+* - [ ] JSON
+* - [ ] API
 - [ ] Hangouts
+* - [ ] CSV
+* - [ ] JSON
+* - [ ] API
 
 ## Vizulizations
 
 #### Graphs:
-- [ ] Messages By Sender By Time -- Radar Chart/Spider Chart
+- [X] Messages By Sender By Time -- Radar Chart/Spider Chart
 - [X] Message Count By Sender -- PieGraph/Donut/Treemap
 - [ ] Message Sentiment -- Radar Chart
 - [ ] Message Timeline -- Timeline Chart
