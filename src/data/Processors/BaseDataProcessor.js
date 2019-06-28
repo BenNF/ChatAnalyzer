@@ -1,8 +1,8 @@
 export default class BaseDataProcessor {
   constructor(props) {
-    // this.api = null;
   }
   auth() {}
-  formatCSVData(input) {}
+  formatCSVData(input) {} //NOTE: format functions return chat objects
   formatJsonData(input) {}
+  formatHTMLData(input){}
 }

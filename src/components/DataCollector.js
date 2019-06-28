@@ -4,9 +4,10 @@ import {
   FbProcessor,
   InstaProcessor,
   WhatsAppProcessor,
-  TwitterProcessor
+  TwitterProcessor,
+  SMSProcessor
 } from "../data/processors/DataProcessors";
-import { watchFile } from "fs";
+import { capitalize } from "../data/structs/Utils";
 
 const modes = {
   platoformSelect: "platoformSelect",
@@ -19,9 +20,17 @@ const platforms = {
   whatsapp: WhatsAppProcessor,
   facebook: FbProcessor,
   twitter: TwitterProcessor,
-  instagram: InstaProcessor
+  instagram: InstaProcessor,
+  sms: SMSProcessor
 };
 
+const formatsByPlatform = {
+  facebook: ["auth", "json", "html"],
+  instagram: ["auth", "json"],
+  whatsapp: ["auth", "json", "csv"],
+  twitter: ["auth", "json"],
+  sms: ["csv", "json"]
+};
 class DataCollector extends React.Component {
   constructor(props) {
     super(props);
@@ -48,20 +57,19 @@ class DataCollector extends React.Component {
   };
 
   formatSelectorHandler = event => {
-    const format = event.target.attributes.dataformat.value
-    if (format === "auth"){
+    const format = event.target.attributes.dataformat.value;
+    if (format === "auth") {
       this.setState({
         ...this.state,
         format: format,
         mode: modes.auth
-      })
-    }
-    else{
+      });
+    } else {
       this.setState({
         ...this.state,
         format: format,
         mode: modes.load
-      })
+      });
     }
   };
   authHandler = event => {};
@@ -73,14 +81,27 @@ class DataCollector extends React.Component {
     let reader = new FileReader();
     reader.onload = event => {
       let data = this.state.data;
-      let formatedData = null
-      if(this.state.format === "csv"){
-        formatedData = this.state.dataProcessor.formatCSVData(event.target.result)
+      let formatedData = null;
+      switch (this.state.format) {
+        case "csv":
+          formatedData = this.state.dataProcessor.formatCSVData(
+            event.target.result
+          );
+          break;
+        case "json":
+          formatedData = this.state.dataProcessor.formatJsonData(
+            event.target.result
+          );
+          break;
+        case "html":
+          formatedData = this.state.dataProcessor.formatHTMLData(
+            event.target.result
+          );
+          break;
+        case "auth":
+        default:
+          formatedData = null;
       }
-      else if(this.state.format === "json"){
-        formatedData = this.state.dataProcessor.formatJsonData(event.target.result)
-      }
-
       data.push(formatedData);
       this.setState({
         ...this.state,
@@ -129,15 +150,17 @@ class DataCollector extends React.Component {
           <div className="data-collector">
             <h1>Select Your Data Format</h1>
             <div className="buttons-box">
-              <button dataformat="json" onClick={this.formatSelectorHandler}>
-                Load JSON
-              </button>
-              <button dataformat="auth" onClick={this.formatSelectorHandler}>
-                Load by Login
-              </button>
-              <button dataformat="csv" onClick={this.formatSelectorHandler}>
-                Load CSV
-              </button>
+              {formatsByPlatform[this.state.platform].map((format, index) => {
+                return (
+                  <button
+                    onClick={this.formatSelectorHandler}
+                    dataformat={format}
+                    key={index}
+                  >
+                    {"Load " + capitalize(format)}
+                  </button>
+                );
+              })}
             </div>
           </div>
         );
@@ -145,7 +168,9 @@ class DataCollector extends React.Component {
       case modes.auth:
         return (
           <div className="data-collector">
-            <h1>Enter your {this.state.platform.charAt(0).toUpperCase() +this.state.platform.slice(1)} email and password</h1>
+            <h1>
+              Enter your {capitalize(this.state.platform)} email and password
+            </h1>
             <form ref="authform" onSubmit={this.authHandler}>
               <input type="email" ref="email" placeholder="Email" />
               <input type="passowrd" ref="password" placeholder="Password" />
