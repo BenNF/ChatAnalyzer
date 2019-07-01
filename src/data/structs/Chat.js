@@ -7,6 +7,12 @@ export default class Chat {
     this.members = [];
     this.title = title;
   }
+  append(msg){
+    this.messages.push(msg)
+    if (!this.members.includes(msg.sender )){
+      this.members.push(msg.sender)
+    }
+  }
 
   toJson() {
     return this.messages.map(msg => {

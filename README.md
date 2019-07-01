@@ -15,7 +15,7 @@ Run:
 ## Data sources
 
 - [ ] Facebook Messenger
-* - [ ] CSV
+* - [x] HTML
 * - [X] JSON
 * - [ ] API
 - [ ] Instagram

@@ -1,9 +1,8 @@
 export default class Message {
-  constructor(index) {
-    this.index = index;
-    this.sender = null;
-    this.content = null;
-    this.timestamp = null;
+  constructor(sender=null, content=null, timestamp=null) {
+    this.sender = sender;
+    this.content = content;
+    this.timestamp = timestamp;
   }
 
   fromJson(json) {

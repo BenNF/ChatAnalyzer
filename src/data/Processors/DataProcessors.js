@@ -1,5 +1,6 @@
 import BaseDataProcessor from "./BaseDataProcessor";
 import Chat from "../structs/Chat";
+import Message from "../structs/Message";
 // const login = require("facebook-chat-api")
 
 export class FbProcessor extends BaseDataProcessor {
@@ -9,15 +10,22 @@ export class FbProcessor extends BaseDataProcessor {
     chat.fromJson(json.messages);
     return chat;
   }
+
   formatHTMLData(input) {
-    const messages = Array.from((document.createElement("html").innerHTML = input).querySelector('[role="main"]').children) //parsing facebook html
+    const html = document.createElement("html")
+    html.innerHTML=input
+    const messages = Array.from((html).querySelector('[role="main"]').children) 
+    //parsing facebook html
+    const chat = new Chat('test')
     messages.forEach(msg=> {
-        const sender = msg[0].innerText
-        const content = msg[1].children[0].children[1].innerText
-        const timestamp = Date.parse(msg[2].innerText)
+        const sender = msg.children[0].innerText
+        const content = msg.children[1].children[0].children[1].innerText
+        const timestamp = Date.parse(msg.children[2].innerText)
+        const message = new Message(sender, content, timestamp)
+        chat.append(message)
     })
-    debugger
-    return input;
+    
+    return chat;
   }
   authUser() {
     return null;
