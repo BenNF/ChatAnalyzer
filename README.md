@@ -26,7 +26,7 @@ Run:
 * - [ ] CSV
 * - [ ] JSON
 * - [ ] API
-- [ ] Groupme
+- [ ] GroupMe
 * - [ ] CSV
 * - [ ] JSON
 * - [ ] API
@@ -35,7 +35,7 @@ Run:
 * - [ ] JSON
 * - [ ] API
 
-## Vizulizations
+## Visualizations
 
 #### Graphs:
 - [X] Messages By Sender By Time -- Radar Chart/Spider Chart
@@ -44,8 +44,9 @@ Run:
 - [ ] Message Timeline -- Timeline Chart
 
 #### Metrics:
- - [X] Averege: Length(words), length(Characters), Messages/day
- - [ ] Most Common Words
+ - [X] Average: Length(words), length(Characters), Messages/day
+ - [X] Most Common Words
+ - [ ] Most common Emojis -- need emoji support(hard)
  - [X] Total: Messages, Days, Words, Characters
 
  ## Style
