@@ -23,9 +23,22 @@ export default class Message {
     //TODO impliment this
   }
 
+  getWordList(){
+    if(this.content){
+      let words = this.content.split(" ")
+      words = words.map(word => {
+        word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()"]/g,"")
+        word = word.toLowerCase()
+        return word //regex to remove punctuation
+      });
+      return words
+    }
+    return []
+  }
+
   getWordLength() {
     if(this.content ){
-      return this.content.split(" ").length;
+      return this.getWordList().length;
     }
     return 0;
   }

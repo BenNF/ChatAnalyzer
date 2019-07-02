@@ -1,5 +1,6 @@
 import Message from "./Message";
 import { summarizers } from "istanbul-lib-report";
+import { regExpLiteral } from "@babel/types";
 
 export default class Chat {
   constructor(title) {
@@ -7,10 +8,10 @@ export default class Chat {
     this.members = [];
     this.title = title;
   }
-  append(msg){
-    this.messages.push(msg)
-    if (!this.members.includes(msg.sender )){
-      this.members.push(msg.sender)
+  append(msg) {
+    this.messages.push(msg);
+    if (!this.members.includes(msg.sender)) {
+      this.members.push(msg.sender);
     }
   }
 
@@ -49,8 +50,125 @@ export default class Chat {
         words: this.getAverageWords(msgs),
         messages: this.getAveragesMessagesPerDay(msgs),
         chars: this.getAverageChars(msgs)
+      },
+      common: {
+        words: this.getMostCommonWords(msgs, 10),
+        emoji: this.getMostCommonEmojis(msgs, 3)
       }
     };
+  }
+  
+  //TODO could this function be better? it seems inefficient and a bit too long
+  getMostCommonWords(msgs, count) {
+    const ignoredWords = [
+      "the",
+      "some",
+      "few",
+      "he",
+      "him",
+      "his",
+      "she",
+      "her",
+      "hers",
+      "they",
+      "their",
+      "theirs",
+      "was",
+      "yes",
+      "for",
+      'that',
+      'this',
+      'have',
+      'had',
+      'has',
+      'and',
+      "that's",
+      "i'm",
+      "it's",
+      'get',
+      'like',
+      'just',
+      'your',
+      "you're",
+      "yeah",
+      'not',
+      'are',
+      'but',
+      "don't",
+      'lol',
+      'now',
+      "out",
+      'where',
+      'what',
+      'why',
+      'how',
+      'when',
+      'now',
+      'got',
+      'gonna',
+      'good',
+      "you",
+      'can',
+      "i'll",
+      "there",
+      'ill'
+    ];
+    const frequency = {};
+    const mostUsedWords = {
+      values: {},
+      min: { key: "default", value: -1 }
+    };
+
+    const words = msgs
+      .map(msg => {
+        return msg.getWordList();
+      })
+      .flat()
+      .filter(word => !ignoredWords.includes(word.toLowerCase()) && word.length >= 3); //filtered and flattened word list
+
+    words.forEach(word => {
+      if (frequency[word]) {
+        frequency[word]++;
+      } else {
+        frequency[word] = 1;
+      }
+    });
+
+    const updateMin = () => {
+      //update the current minimum value
+      Object.keys(mostUsedWords["values"]).forEach(key => {
+        if (
+          mostUsedWords["values"][key] < mostUsedWords["min"].value ||
+          mostUsedWords["min"].value === -1
+        ) {
+          mostUsedWords["min"].key = key;
+          mostUsedWords["min"].value = mostUsedWords["values"][key];
+        }
+      });
+    };
+
+    Object.keys(frequency).forEach(key => {
+      if (Object.keys(mostUsedWords["values"]).length < count) {
+        mostUsedWords["values"][key] = frequency[key];
+        updateMin();
+      } else {
+        if (frequency[key] > mostUsedWords["min"].value) {
+          const deleteKey = mostUsedWords["min"].key;
+          delete mostUsedWords["values"][deleteKey]; //delete key in values of smallest element
+          mostUsedWords["values"][key] = frequency[key]; //add the value
+          mostUsedWords["min"].key = "removed";
+          mostUsedWords["min"].value = -1;
+
+          updateMin();
+        }
+      }
+    });
+    return mostUsedWords.values;
+  }
+
+  getMostCommonEmojis(msgs, cout) {
+   
+    return [];
   }
 
   getAverageWords(messages = this.messages) {

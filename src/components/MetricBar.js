@@ -23,6 +23,20 @@ const MetricBar = props => {
             <span className="value">{props.data.total.chars}</span>
           </div>
         </div>
+        <div className="most-common">
+          <h2 className="title"> Most Common Words</h2>
+          <div className='most-common-metric'>
+          {Object.keys(props.data.common.words).map(key => {
+            return (
+              <div className="metric">
+              <span className="label">{key}: </span>
+              <span className="value">{props.data.common.words[key]} times</span>
+              </div>)
+          })}
+          </div>
+          <div className='most-common-metric'>
+          </div>
+        </div>
         <div className="averages">
           <div className="metric">
             <span className="label">Average Messages per Day: </span>
