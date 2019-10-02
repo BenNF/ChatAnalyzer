@@ -60,7 +60,9 @@
 
 .charts{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr; 
+    max-height: 700px;
+    min-height: 500px;
     
 }
 
